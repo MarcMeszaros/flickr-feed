@@ -1,0 +1,55 @@
+{
+  "name": "flickr-feed",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The main website for all the magic.",
+  "scripts": {
+    "test": "karma start karma.conf.js",
+    "build": "webpack",
+    "clean": "rm -Rf node_modules && rm -Rf build",
+    "serve": "NODE_ENV=development webpack-dev-server -d --content-base build/ --port 9000 --inline --hot --progress --history-api-fallback --compress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:MarcMeszaros/flickr-feed.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "~6.7.5",
+    "babel-core": "~6.23.1",
+    "babel-loader": "~6.3.2",
+    "babel-preset-es2015": "~6.22.0",
+    "css-loader": "~0.26.1",
+    "extract-text-webpack-plugin": "~2.0.0",
+    "file-loader": "~0.10.1",
+    "html-loader": "~0.4.4",
+    "jasmine-core": "~2.5.2",
+    "karma": "~1.5.0",
+    "karma-chrome-launcher": "~2.0.0",
+    "karma-firefox-launcher": "~1.0.0",
+    "karma-jasmine": "~1.1.0",
+    "karma-junit-reporter": "~1.2.0",
+    "karma-mocha-reporter": "~2.2.1",
+    "karma-phantomjs-launcher": "~1.0.2",
+    "less": "~2.7.1",
+    "less-loader": "~2.2.3",
+    "phantomjs-prebuilt": "~2.1.14",
+    "postcss-loader": "~1.3.2",
+    "style-loader": "~0.13.1",
+    "url-loader": "~0.5.7",
+    "vue-loader": "~11.1.3",
+    "vue-style-loader": "~2.0.3",
+    "vue-template-compiler": "~2.2.1",
+    "webpack": "~2.2.0",
+    "webpack-dev-server": "~2.4.1"
+  },
+  "dependencies": {
+    "bootstrap": "~3.3.7",
+    "vue": "~2.2.1",
+    "vue-progressbar": "~0.7.0",
+    "vue-resource": "~1.2.0",
+    "vue-router": "~2.3.0",
+    "vuex": "~2.2.1"
+  }
+}

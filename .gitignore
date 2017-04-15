@@ -1,0 +1,20 @@
+# system
+.DS_Store
+
+# editor
+.idea/workspace.xml
+*~
+*.swp
+
+# build/dependencies
+/dist
+/build
+junit/
+node_modules/
+bower_components/
+
+# nodenv
+.node-version
+
+# logs
+*.log

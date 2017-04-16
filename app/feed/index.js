@@ -1,4 +1,4 @@
-import db from './database.js';
+import db from '../database.js';
 
 export default {
     name: 'Feed',
@@ -20,15 +20,14 @@ export default {
                 self.$data.photos.push(photo);
             });
 
-
-        // the callback
-        window.jsonFlickrFeed = function(d) {
-            d.items.forEach(function(item) {
-                item.media.c = item.media.m.replace('_m.', '_c.')
-                db.photos.add(item);
-            });
+        // start the sync worker
+        var syncWorker = new Worker('/worker.full.js');
+        syncWorker.onmessage = function(e) {
+            console.log('Worker message received.');
+            if (e.data.action === 'photosAdded') {
+                self.$data.photos.concat(e.data.items);
+            }
         };
-
-        this.$http.jsonp('https://api.flickr.com/services/feeds/photos_public.gne?format=json');
+        syncWorker.postMessage({action: 'start'})
     },
 };

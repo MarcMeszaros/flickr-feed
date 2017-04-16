@@ -1,13 +1,25 @@
 var path = require('path');
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var AutoPrefixerPlugin = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     cache: true,
+    devServer: {
+        proxy: {
+            '/flickr/public': {
+                target: 'https://api.flickr.com',
+                pathRewrite: {'^/flickr/public' : '/services/feeds/photos_public.gne?format=json'},
+                changeOrigin: true,
+                secure: false,
+            }
+        }
+    },
     entry: {
         app: './app/app.js',
         vendors: './app/vendors.js',
+        worker: './app/worker.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),

@@ -1,8 +1,16 @@
 <div>
-    <h1>Feed</h1>
-    <div class="row">
-        <div class="col-xs-12" v-for="photo in photos">
-            {{ photo }}
+    <h1>Feed ({{photos.length}})</h1>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp photo-card" v-for="photo in photos">
+            <div class="mdl-card--expand photo" v-bind:style="{ backgroundImage: 'url(' + photo.media.c + ')' }"></div>
+            <div class="mdl-card__supporting-text">
+                {{photo.title}}
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+                    <i class="material-icons">favorite_border</i>
+                </button>
+            </div>
         </div>
     </div>
 </div>

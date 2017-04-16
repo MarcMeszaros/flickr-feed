@@ -3,11 +3,13 @@ require('./app.less');
 require('./index.html');
 
 // libraries
+import Dexie from 'dexie';
+
+// vue.js + plugins
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueProgressBar from 'vue-progressbar';
-import Dexie from 'dexie';
 
 // setup the plugins
 Vue.use(VueRouter);

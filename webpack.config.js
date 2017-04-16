@@ -7,6 +7,7 @@ module.exports = {
     cache: true,
     entry: {
         app: './app/app.js',
+        vendors: './app/vendors.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -26,7 +27,9 @@ module.exports = {
                     js: 'babel-loader?presets[]=es2015',
                 }
             }},
-            {test: /\.css$/, loader: 'css-loader'},
+            {test: /\.css$/, loader: ExtractTextPlugin.extract({
+                loader: 'css-loader'
+            })},
             {test: /\.less$/, loader: ExtractTextPlugin.extract({
                 loader: 'css-loader!less-loader'
             })},

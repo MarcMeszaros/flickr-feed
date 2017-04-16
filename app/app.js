@@ -7,6 +7,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueProgressBar from 'vue-progressbar';
+import Dexie from 'dexie';
 
 // setup the plugins
 Vue.use(VueRouter);
@@ -18,24 +19,25 @@ Vue.use(VueProgressBar, {
 
 // define the components
 import NotFoundComponent from './404/index.vue';
+import FeedRoutes from './feed/routes.js';
 import IntroRoutes from './intro/routes.js';
 
 // define routes and map to a component
 const routes = [
     {
         path: '/',
-        redirect: '/intro',
-        // before we resolve
+        redirect: '/feed',
         beforeEnter: function(to, from, next) {
             var introComplete = localStorage.getItem('introComplete');
-            if (introComplete !== null) {
-                return next('/gallery');
+            if (introComplete === null) {
+                return next('/intro');
             } else {
                 return next();
             }
         }
     },
     // use fancy es2015 'spread' syntax to merge array
+    ...FeedRoutes,
     ...IntroRoutes,
     {
         path: '*',

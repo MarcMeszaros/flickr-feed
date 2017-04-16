@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "bootstrap": "~3.3.7",
+    "dexie": "^1.5.1",
     "vue": "~2.2.1",
     "vue-progressbar": "~0.7.0",
     "vue-resource": "~1.2.0",

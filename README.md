@@ -12,7 +12,7 @@ A small web-based Flickr client using the public Flickr JSON feed.
 
 ## Development & Running
 
-Can be run/built locally with node.js.
+Can be run/built locally with node.js. A modern browser is also required.
 
 1. Install node.js (6.1.0+)
 2. Run `npm install` in shell in root directory
@@ -23,3 +23,11 @@ Can be run/built locally with node.js.
 # Tests
 
 Unit tests can be run by executing `npm test`.
+
+# Implementation & Caveats
+- About 6-7hrs of time spent on this (mostly chasing down webpack/Dexie.js issues)
+- The "feed" page uses a web worker to get new photos from the Flickr public feed every 60s
+- Photo data is stored in the browser using IndexedDB
+- Uses the webpack server to get around CORS limitation (ie. proxy API requests)
+- Because this is all browser based, multiple users using a different browser will result in a different list
+- Lots of UI polish needed

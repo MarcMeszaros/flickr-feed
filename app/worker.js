@@ -51,6 +51,11 @@ function updateDatabase(items) {
 
     // bulk add items
     db.photos.bulkAdd(items).then(function(lastKey) {
+        // put the id in the object before sending to the UI
+        for (var i = 0; i < items.length; i++) {
+            items[i].id = (lastKey - items.length + i)
+        }
+        // notify UI
         postMessage({action: 'photosAdded', items: items});
     }).catch(Dexie.BulkError, function(e) {
         // Explicitely catching the bulkAdd() operation makes those successful

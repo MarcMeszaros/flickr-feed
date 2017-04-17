@@ -1,16 +1,33 @@
 <div>
-    <h1>Feed ({{photos.length}})</h1>
+    <h1 class="clickable" v-if="photosAdded.length" v-on:click="mergeAddedPhotos()"><span class="mdl-badge" :data-badge="photosAdded.length">Feed</span></h1>
+    <h1 v-else>Feed</h1>
+    <paginate
+        :page-count="numberOfPages"
+        :click-handler="pageChange"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        :container-class="'paginator'">
+    </paginate>
+
     <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp photo-card" v-for="photo in photos">
+        <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp photo-card"
+            v-for="(photo, index) in photos">
             <div class="mdl-card__media photo">
-                <img v-bind:src="photo.media.c" alt="" />
+                <img :src="photo.media.c" alt="" />
             </div>
             <div class="mdl-card__supporting-text">
-                {{photo.title}}
+                <p>{{photo.title}}</p>
+                <div class="tags" v-if="photo.tags">
+                    <span class="mdl-chip" v-for="tag in getTags(photo)">
+                        <span class="mdl-chip__text">{{tag}}</span>
+                    </span>
+                </div>
             </div>
             <div class="mdl-card__actions mdl-card--border">
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
-                    <i class="material-icons">favorite_border</i>
+                <button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                    v-on:click="favoriteToggle(index)">
+                    <i class="material-icons" v-if="photo.favorited">favorite</i>
+                    <i class="material-icons" v-else>favorite_border</i>
                 </button>
             </div>
         </div>

@@ -46,6 +46,7 @@ function updateDatabase(items) {
     // process each item and add the tweaked image URL
     items.forEach(function(item) {
         item.media.c = item.media.m.replace('_m.', '_c.')
+        item.favorited = false;
     });
 
     // bulk add items
@@ -54,7 +55,8 @@ function updateDatabase(items) {
     }).catch(Dexie.BulkError, function(e) {
         // Explicitely catching the bulkAdd() operation makes those successful
         // additions commit despite that there were errors.
-        console.error("Some photos did not succeed. However, " + items.length-e.failures.length + " photos was added successfully");
+        var addedCount = (items.length - e.failures.length);
+        console.error(`Some photos did not succeed. However, ${addedCount} photos were added successfully.`);
     });
 }
 
@@ -97,5 +99,9 @@ onmessage = function(e) {
         console.log('Sync worker started.');
         running = true;
         sync();
+    } else if(e.data.action === 'status') {
+        postMessage({
+            running: running,
+        });
     }
 }

@@ -2,18 +2,17 @@
 require('./app.less');
 require('./index.html');
 
-// libraries
-import Dexie from 'dexie';
-
 // vue.js + plugins
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
+import VuePaginate from 'vuejs-paginate';
 import VueProgressBar from 'vue-progressbar';
 
 // setup the plugins
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.component('paginate', VuePaginate);
 Vue.use(VueProgressBar, {
   color: '#fda49f',
   failedColor: '#971e20'
@@ -28,7 +27,7 @@ import IntroRoutes from './intro/routes.js';
 const routes = [
     {
         path: '/',
-        redirect: '/feed',
+        redirect: '/feed/1',
         beforeEnter: function(to, from, next) {
             var introComplete = localStorage.getItem('introComplete');
             if (introComplete === null) {

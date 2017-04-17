@@ -2,7 +2,7 @@
 
 // if running on CircleCI, add extra browsers to test
 var CI = process.env.CI || false;
-var unitTestBrowsers = [];
+var unitTestBrowsers = ['PhantomJS'];
 if (CI) {
     unitTestBrowsers.push('Chrome', 'Firefox');
 }
@@ -11,16 +11,13 @@ if (CI) {
 module.exports = function(config) {
   config.set({
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: 'app',
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
-      '**/test/**/*-spec.js'
+        {pattern: './test/*-spec.js', watched: false}
     ],
 
     // list of files to exclude
@@ -30,6 +27,21 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        './app/**/*.js': ['webpack'],
+        './test/*-spec.js': ['webpack']
+    },
+    webpack: {
+        // karma watches the test entry points
+        // (you don't need to specify the entry option)
+        // webpack watches dependencies
+
+        // webpack configuration
+    },
+
+    webpackMiddleware: {
+        // webpack-dev-middleware configuration
+        // i. e.
+        stats: 'errors-only'
     },
 
     // test results reporter to use
@@ -56,7 +68,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'].concat(unitTestBrowsers),
+    browsers: unitTestBrowsers,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

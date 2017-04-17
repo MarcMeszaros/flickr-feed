@@ -88,7 +88,6 @@ export default {
             return photo.tags.split(' ');
         },
         pageChange: function(page) {
-            console.log(page);
             this.$router.push({ name: 'favorites', params: { page: page }});
         }
     },

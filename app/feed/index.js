@@ -1,5 +1,4 @@
 import db from '../database.js';
-import _ from 'underscore';
 
 var ITEMS_PER_PAGE = 20;
 
@@ -38,10 +37,8 @@ export default {
         self.syncWorker.onmessage = function(e) {
             console.log('Worker message received.');
             if (e.data.action === 'photosAdded') {
+                // update the photosAdded array
                 self.$set(self.$data, 'photosAdded', self.$data.photosAdded.concat(e.data.items));
-                db.photos.count().then(function(response) {
-                    self.$set(self.$data, 'photosCount', response);
-                });
             }
         };
     },
@@ -101,7 +98,6 @@ export default {
             return photo.tags.split(' ');
         },
         pageChange: function(page) {
-            console.log(page);
             this.$router.push({ name: 'feed', params: { page: page }});
         }
     },

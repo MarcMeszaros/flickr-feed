@@ -26,15 +26,10 @@ export default {
         db.open().catch(function(error) {
             alert('Uh oh : ' + error);
         });
-
-        db.photos.filter(function (photo) {
-            return photo.favorited === true;
-        }).count().then(function(response) {
-            self.$set(self.$data, 'photosCount', response);
-        });
     },
     mounted() {
         var self = this;
+        // get all favorited photos from storage
         db.photos.filter(function (photo) {
             return photo.favorited === true;
         }).count().then(function(response) {

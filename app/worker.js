@@ -2,6 +2,7 @@ import db from './database.js';
 import Dexie from 'dexie';
 
 var SYNC_SECONDS = 60;
+var running = true;
 
 // open up the db connection
 db.open().catch(function(error) {
@@ -9,7 +10,14 @@ db.open().catch(function(error) {
 });
 
 
-// https://developers.google.com/web/fundamentals/getting-started/primers/promises
+/**
+ * Wraps XMLHttpRequest with a promise.
+ *
+ * https://developers.google.com/web/fundamentals/getting-started/primers/promises
+ *
+ * @param  {String} url The url to call.
+ * @return {Promise} An ES6 style promise
+ */
 function get(url) {
   // Return a new promise.
   return new Promise(function(resolve, reject) {
@@ -41,9 +49,18 @@ function get(url) {
   });
 }
 
-
+/**
+ * Update the local IndexedDB database with the returned items.
+ *
+ * Notifies the UI when items are added
+ *
+ * @param  {[type]} items [description]
+ * @return {[type]}       [description]
+ */
 function updateDatabase(items) {
     // process each item and add the tweaked image URL
+    // (responses don't have the "_c." link, but it turns out that most images have
+    // that and it is higher resolution)
     items.forEach(function(item) {
         item.media.c = item.media.m.replace('_m.', '_c.')
         item.favorited = false;
@@ -65,8 +82,12 @@ function updateDatabase(items) {
     });
 }
 
-// the sync function
-var running = true;
+/**
+ * Get the Flickr public feed data.
+ *
+ * Continuously executes while the `running` variable is true. This can
+ * be set from the UI using web worker messages.
+ */
 function sync() {
     // we use the webpack proxy module to get around CORS
     get('/flickr/public').then(function(response) {
@@ -95,7 +116,8 @@ function sync() {
     });
 }
 
-// handle message from script
+// handle message from UI script
+// (effectively acts as simple controls for the worker)
 onmessage = function(e) {
     if (e.data.action === 'stop') {
         console.log('Sync worker stopped.');

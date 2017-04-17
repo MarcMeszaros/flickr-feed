@@ -45,11 +45,12 @@ export default {
     mounted() {
         var self = this;
         self.syncWorker.postMessage({action: 'start'});
+        // update the photos count
         db.photos.count().then(function(response) {
             self.$set(self.$data, 'photosCount', response);
         });
 
-        // Find some photos
+        // get all favorited photos from storage
         var offset = (this.$route.params.page - 1) * ITEMS_PER_PAGE;
         db.photos
             .reverse()
@@ -66,9 +67,8 @@ export default {
     },
     methods: {
         fetchData: function() {
-            // console.log(this.$route.params.page);
             var self = this;
-            // Find some photos
+            // get all favorited photos from storage
             var offset = (self.$route.params.page - 1) * ITEMS_PER_PAGE;
             self.$set(self.$data, 'photos', []);
             db.photos

@@ -4,7 +4,7 @@ var ITEMS_PER_PAGE = 20;
 
 
 export default {
-    name: 'Feed',
+    name: 'Favorite',
     data() {
         return {
             photos: [],

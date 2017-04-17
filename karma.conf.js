@@ -8,6 +8,8 @@ if (CI) {
 }
 
 
+var webpackConfig = require('./webpack.config.js');
+
 module.exports = function(config) {
   config.set({
 
@@ -17,6 +19,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+        'node_modules/jasmine-promises/dist/jasmine-promises.js',
         {pattern: './test/*-spec.js', watched: false}
     ],
 
@@ -36,6 +39,9 @@ module.exports = function(config) {
         // webpack watches dependencies
 
         // webpack configuration
+        module: webpackConfig.module,
+        resolve: webpackConfig.resolve,
+
     },
 
     webpackMiddleware: {

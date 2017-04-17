@@ -22,26 +22,16 @@ Vue.use(VueProgressBar, {
 import NotFoundComponent from './404/index.vue';
 import FavoriteRoutes from './favorite/routes.js';
 import FeedRoutes from './feed/routes.js';
-import IntroRoutes from './intro/routes.js';
 
 // define routes and map to a component
 const routes = [
     {
         path: '/',
-        redirect: '/feed/1',
-        beforeEnter: function(to, from, next) {
-            var introComplete = localStorage.getItem('introComplete');
-            if (introComplete === null) {
-                return next('/intro');
-            } else {
-                return next();
-            }
-        }
+        redirect: '/feed/1'
     },
     // use fancy es2015 'spread' syntax to merge array
     ...FavoriteRoutes,
     ...FeedRoutes,
-    ...IntroRoutes,
     {
         path: '*',
         component: NotFoundComponent

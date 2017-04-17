@@ -30,8 +30,8 @@ module.exports = {
         rules: [
             {test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=fonts/[name].[ext]'},
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', options: {
-                presets: ['es2015'],
-            },
+                presets: ['es2015']
+            }},
             {test: /\.vue$/, loader: 'vue-loader', options: {
                 loaders: {
                     less: ExtractTextPlugin.extract({

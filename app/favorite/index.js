@@ -1,5 +1,4 @@
 import db from '../database.js';
-import _ from 'underscore';
 
 var ITEMS_PER_PAGE = 20;
 
@@ -9,7 +8,6 @@ export default {
     data() {
         return {
             photos: [],
-            photosAdded: [],
             photosCount: 0,
         }
     },
@@ -29,32 +27,26 @@ export default {
             alert('Uh oh : ' + error);
         });
 
-        db.photos.count().then(function(response) {
+        db.photos.filter(function (photo) {
+            return photo.favorited === true;
+        }).count().then(function(response) {
             self.$set(self.$data, 'photosCount', response);
         });
-
-        // start the sync worker
-        self.syncWorker = new Worker('/worker.full.js');
-        self.syncWorker.onmessage = function(e) {
-            console.log('Worker message received.');
-            if (e.data.action === 'photosAdded') {
-                self.$set(self.$data, 'photosAdded', self.$data.photosAdded.concat(e.data.items));
-                db.photos.count().then(function(response) {
-                    self.$set(self.$data, 'photosCount', response);
-                });
-            }
-        };
     },
     mounted() {
         var self = this;
-        self.syncWorker.postMessage({action: 'start'});
-        db.photos.count().then(function(response) {
+        db.photos.filter(function (photo) {
+            return photo.favorited === true;
+        }).count().then(function(response) {
             self.$set(self.$data, 'photosCount', response);
         });
 
         // Find some photos
         var offset = (this.$route.params.page - 1) * ITEMS_PER_PAGE;
         db.photos
+            .filter(function (photo) {
+                return photo.favorited === true;
+            })
             .reverse()
             .offset(offset)
             .limit(ITEMS_PER_PAGE)
@@ -62,10 +54,6 @@ export default {
                 photo.id = cursor.primaryKey;
                 self.$data.photos.push(photo);
             });
-    },
-    beforeDestroyed() {
-        var self = this;
-        self.syncWorker.postMessage({action: 'start'});
     },
     methods: {
         fetchData: function() {
@@ -75,6 +63,9 @@ export default {
             var offset = (self.$route.params.page - 1) * ITEMS_PER_PAGE;
             self.$set(self.$data, 'photos', []);
             db.photos
+                .filter(function (photo) {
+                    return photo.favorited === true;
+                })
                 .reverse()
                 .offset(offset)
                 .limit(ITEMS_PER_PAGE)
@@ -93,16 +84,12 @@ export default {
                 }
             });
         },
-        mergeAddedPhotos: function() {
-            this.$set(this.$data, 'photos', this.$data.photosAdded.reverse().concat(this.$data.photos));
-            this.$set(this.$data, 'photosAdded', []);
-        },
         getTags: function(photo) {
             return photo.tags.split(' ');
         },
         pageChange: function(page) {
             console.log(page);
-            this.$router.push({ name: 'feed', params: { page: page }});
+            this.$router.push({ name: 'favorites', params: { page: page }});
         }
     },
 };

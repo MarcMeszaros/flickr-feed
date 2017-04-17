@@ -20,6 +20,7 @@ Vue.use(VueProgressBar, {
 
 // define the components
 import NotFoundComponent from './404/index.vue';
+import FavoriteRoutes from './favorite/routes.js';
 import FeedRoutes from './feed/routes.js';
 import IntroRoutes from './intro/routes.js';
 
@@ -38,6 +39,7 @@ const routes = [
         }
     },
     // use fancy es2015 'spread' syntax to merge array
+    ...FavoriteRoutes,
     ...FeedRoutes,
     ...IntroRoutes,
     {
